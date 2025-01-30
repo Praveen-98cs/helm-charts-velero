@@ -316,7 +316,7 @@ configuration:
   backupStorageLocation:
     # name is the name of the backup storage location where backups should be stored. If a name is not provided,
     # a backup storage location will be created with the name "default". Optional.
-  - name:
+  - name: default
     # provider is the name for the backup storage location provider.
     provider: azure
     # bucket is the name of the bucket to store backups in. Required.
@@ -342,6 +342,7 @@ configuration:
     config:
       resourceGroup: choreo-redis-rnd-poc
       storageAccount: choreoredisstorage
+      subscriptionId: fc65f1d6-8d4a-43c7-afb1-be590f6ac374
     #  region:
     #  s3ForcePathStyle:
     #  s3Url:
@@ -365,20 +366,20 @@ configuration:
   # See https://velero.io/docs/v1.6/api-types/volumesnapshotlocation/
   volumeSnapshotLocation:
     # name is the name of the volume snapshot location where snapshots are being taken. Required.
-  - name:
+  - name: default
     # provider is the name for the volume snapshot provider.
-    provider:
+    provider: azure
     credential:
       # name of the secret used by this volumeSnapshotLocation.
-      name:
+      name: velero-credentials
       # name of key that contains the secret data to be used.
-      key:
+      key: cloud
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
-    config: {}
+    config: 
+      resourceGroup: choreo-redis-rnd-poc
   #    region:
   #    apiTimeout:
-  #    resourceGroup:
   #    The ID of the subscription where volume snapshots should be stored, if different from the cluster’s subscription. If specified, also requires `configuration.volumeSnapshotLocation.config.resourceGroup`to be set. (Azure only)
   #    subscriptionId:
   #    incremental:
@@ -412,7 +413,7 @@ configuration:
   # How long to wait by default before backups can be garbage collected. Default: 72h
   defaultBackupTTL:
   # Name of the default volume snapshot location.
-  defaultVolumeSnapshotLocations:
+  defaultVolumeSnapshotLocations: default
   # `velero server` default: empty
   disableControllers:
   # `velero server` default: false
@@ -442,6 +443,7 @@ configuration:
   # Comma separated list of velero feature flags. default: empty
   # features: EnableCSI
   features:
+    EnableCSI: false
   # Resource requests/limits to specify for the repository-maintenance job. Optional.
   # https://velero.io/docs/v1.14/repository-maintenance/#resource-limitation
   repositoryMaintenanceJob:
@@ -463,7 +465,7 @@ configuration:
   extraEnvVars: {}
 
   # Set true for backup all pod volumes without having to apply annotation on the pod when used file system backup Default: false.
-  defaultVolumesToFsBackup:
+  defaultVolumesToFsBackup: false
 
   # How often repository maintain is run for repositories by default.
   defaultRepoMaintainFrequency:
@@ -507,7 +509,7 @@ credentials:
   name:
   # Name of a pre-existing secret (if any) in the Velero namespace
   # that should be used to get IAM account credentials. Optional.
-  existingSecret:
+  existingSecret: velero-credentials
   # Data to be stored in the Velero secret, if `useSecret` is true and `existingSecret` is empty.
   # As of the current Velero release, Velero only uses one secret key/value at a time.
   # The key must be named `cloud`, and the value corresponds to the entire content of your IAM credentials file.
