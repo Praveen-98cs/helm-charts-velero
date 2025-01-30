@@ -37,7 +37,7 @@ image:
   # Digest value example: sha256:d238835e151cec91c6a811fe3a89a66d3231d9f64d09e5f3c49552672d271f38.
   # If used, it will take precedence over the image.tag.
   # digest:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # One or more secrets to be used when pulling images
   imagePullSecrets: []
   # - registrySecretName
@@ -105,12 +105,12 @@ dnsPolicy: ClusterFirst
 # Init containers to add to the Velero deployment's pod spec. At least one plugin provider image is required.
 # If the value is a string then it is evaluated as a template.
 initContainers:
-  # - name: velero-plugin-for-aws
-  #   image: velero/velero-plugin-for-aws:v1.10.0
-  #   imagePullPolicy: IfNotPresent
-  #   volumeMounts:
-  #     - mountPath: /target
-  #       name: plugins
+  - name: velero-plugin-for-microsoft-azure
+    image: velero/velero-plugin-for-microsoft-azure:v1.11.1
+    imagePullPolicy: Always
+    volumeMounts:
+      - mountPath: /target
+        name: plugins
 
 # SecurityContext to use for the Velero deployment. Optional.
 # Set fsGroup for `AWS IAM Roles for Service Accounts`
@@ -318,9 +318,9 @@ configuration:
     # a backup storage location will be created with the name "default". Optional.
   - name:
     # provider is the name for the backup storage location provider.
-    provider:
+    provider: azure
     # bucket is the name of the bucket to store backups in. Required.
-    bucket:
+    bucket: velero
     # caCert defines a base64 encoded CA bundle to use when verifying TLS connections to the provider. Optional.
     caCert:
     # prefix is the directory under which all Velero data should be stored within the bucket. Optional.
@@ -339,7 +339,9 @@ configuration:
       key:
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
-    config: {}
+    config:
+      resourceGroup: choreo-redis-rnd-poc
+      storageAccount: choreoredisstorage
     #  region:
     #  s3ForcePathStyle:
     #  s3Url:
