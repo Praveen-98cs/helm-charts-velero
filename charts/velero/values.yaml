@@ -377,7 +377,7 @@ configuration:
     # Additional provider-specific configuration. See link above
     # for details of required/optional fields for your provider.
     config: 
-      resourceGroup: choreo-redis-rnd-poc
+      resourceGroup: mc_choreo-redis-rnd-poc_choreo-redis-rnd_eastasia
   #    region:
   #    apiTimeout:
   #    The ID of the subscription where volume snapshots should be stored, if different from the cluster’s subscription. If specified, also requires `configuration.volumeSnapshotLocation.config.resourceGroup`to be set. (Azure only)
@@ -413,7 +413,7 @@ configuration:
   # How long to wait by default before backups can be garbage collected. Default: 72h
   defaultBackupTTL:
   # Name of the default volume snapshot location.
-  defaultVolumeSnapshotLocations: default
+  defaultVolumeSnapshotLocations: 
   # `velero server` default: empty
   disableControllers:
   # `velero server` default: false
